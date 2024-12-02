@@ -61,6 +61,7 @@ class ArticleController extends Controller
 
     public function addProcc(Request $request)
     {
+       
         // Validation rules
         $rules = [
             'name' => 'required|unique:articles,name',
@@ -151,7 +152,7 @@ class ArticleController extends Controller
                 $featuredImage = $request->file('image');
                 $extension = $featuredImage->getClientOriginalExtension();
                 $featuredImageName = Str::slug($request->name) . rand(0, 1000) . time() . '.' . $extension;
-                $featuredImage->move(public_path('/ArticleImages/'), $featuredImageName);
+                $featuredImage->move(public_path().'/ArticleImages/', $featuredImageName);
                 $article->image = $featuredImageName;
             }
             $article->category_id    = $request->category_id  ?? '';
@@ -203,6 +204,8 @@ class ArticleController extends Controller
     public function articleCategoryAddProcc(Request $request)
     {
         // Validation rules
+
+        
         $rules = [
             'name' => 'required|unique:article_categories,name',
             'description' => 'required', // No unique rule needed for description

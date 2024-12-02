@@ -28,6 +28,7 @@
 
     <!-- ckeditor -->
     <script src="https://cdn.ckeditor.com/ckeditor5/42.0.0/classic/ckeditor.js"></script>
+    <link rel="stylesheet" href="{{asset('front/admin/style.css') }}">
 
 
 </head>
@@ -129,6 +130,18 @@
                                                 <li class="nk-menu-item">
                                                     <a href="{{url('/admin-dashboard/rules')}}" class="nk-menu-link"><span class="nk-menu-text">Rules</span></a>
                                                 </li>
+                                            </ul>
+                                        </li>    
+                                        <li class="nk-menu-item has-sub">
+                                            <a href="#" class="nk-menu-link nk-menu-toggle">
+                                                <span class="nk-menu-icon"><em class="icon ni ni-article"></em></span>
+                                                <span class="nk-menu-text">FAQ's Section</span>
+                                            </a>
+                                            <ul class="nk-menu-sub" >
+                                                <li class="nk-menu-item">
+                                                    <a href="{{url('/admin-dashboard/faqs')}}" class="nk-menu-link"><span class="nk-menu-text">Faq's</span></a>
+                                                </li>
+                                              
                                             </ul>
                                         </li>    
                                     </ul>

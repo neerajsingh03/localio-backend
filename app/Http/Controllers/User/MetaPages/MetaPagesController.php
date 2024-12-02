@@ -4,7 +4,7 @@ namespace App\Http\Controllers\User\MetaPages;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-
+use App\Models\Faq;
 class MetaPagesController extends Controller
 {
     public function expertGuide()
@@ -13,7 +13,9 @@ class MetaPagesController extends Controller
     }
     public function helpCenter()
     {
-        return view('User.meta-pages.support.help');
+        $faqs = Faq::all();
+
+        return view('User.meta-pages.support.help',compact('faqs'));
     }
     public function contact()
     {
