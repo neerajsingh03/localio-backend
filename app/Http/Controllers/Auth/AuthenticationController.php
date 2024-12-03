@@ -233,6 +233,8 @@ class AuthenticationController extends Controller
         $data = Mail::to($request->email)->send(new ForgetPasswordMail($data));
     
         return redirect('/otp-confirm')->with('success' ,'OTP has been sent to your email');
+        // return redirect()->back()->with('success' ,'OTP has been sent to your email');
+
     }
     public function otpConfirm()
     {

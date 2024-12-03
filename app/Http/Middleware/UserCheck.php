@@ -21,6 +21,12 @@ class UserCheck
         }else{
             return redirect('/')->with('error','kindly login to open dashboard');
         }
+        // if (Auth::check() && Auth::user()->user_type === 'admin') {
+        //     return $next($request);
+        // }
+
+        // If not a vendor, redirect to login or error page
+        return redirect()->route('login')->with('error', 'You must be a admin to access this page.');
        
     }
 }

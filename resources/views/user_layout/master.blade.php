@@ -15,12 +15,18 @@
       <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.9.0/slick.css"
          integrity="sha512-wR4oNhLBHf7smjy0K4oqzdWumd+r5/+6QO/vDda76MW5iug4PT7v86FoEkySIJft3XA0Ae6axhIvHrqwm793Nw=="
          crossorigin="anonymous" referrerpolicy="no-referrer" />
-      <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css"/>
+      <!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css"/> -->
       
       <!-- <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet"> -->
 
          <link rel="stylesheet" href="{{ asset('front/css/style.css') }}">
          <link rel="stylesheet" href="{{ asset('front/css/responsive.css') }}">
+
+               <!-- SweetAlert2 CSS -->
+      <link href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css" rel="stylesheet">
+
+      <!-- SweetAlert2 JS -->
+      <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.all.min.js"></script>
 
       <title>home page</title>
    </head>
@@ -281,8 +287,11 @@
       crossorigin="anonymous" referrerpolicy="no-referrer"></script>
    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.min.js"></script>
+   
    <script src="{{ asset('front/js/script.js') }}"></script>
    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+
+
    <script>
       $(function () {
          AOS.init();
@@ -316,5 +325,49 @@
       });
    })
    </script>
+<!-- <script>
+    @if (Session::has('error'))
+        toastr.clear();
+        NioApp.Toast('{{ Session::get('error') }}', 'error', {
+            position: 'top-right'
+        });
+    @endif
+
+    @if (Session::has('success'))
+
+        toastr.clear();
+        NioApp.Toast('{{ Session::get('success') }}', 'info', {
+            position: 'top-right'
+        });
+    @endif
+</script> -->
+<script>
+    @if (Session::has('error'))
+        Swal.fire({
+            icon: 'error',
+            title: 'Oops...',
+            text: '{{ Session::get('error') }}',
+            position: 'top-right',
+            toast: true,
+            showConfirmButton: false,
+            timer: 3000, // Auto close after 3 seconds
+        });
+    @endif
+
+    @if (Session::has('success'))
+        Swal.fire({
+            icon: 'success',
+            title: 'Success!',
+            text: '{{ Session::get('success') }}',
+            position: 'top-right',
+            toast: true,
+            showConfirmButton: false,
+            timer: 3000, // Auto close after 3 seconds
+        });
+    @endif
+</script>
+
+
+
 </body>
 </html>

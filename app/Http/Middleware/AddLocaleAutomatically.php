@@ -71,6 +71,7 @@ class AddLocaleAutomatically
 //     return $next($request);
 // }
 
+
 public function handle(Request $request, Closure $next)
 {
     // Check if the route has the 'AddLocaleAutomatically' middleware
@@ -84,6 +85,7 @@ public function handle(Request $request, Closure $next)
 
         if ($urlLocale) {
             $previousPath = substr($request->getRequestUri(), strlen("/{$urlLocale}"));
+            // dd($previousPath);
             Session::put('previous_path', $previousPath);
         }
 
@@ -125,8 +127,6 @@ public function handle(Request $request, Closure $next)
 
     return $next($request);
 }
-
-
 
 
 

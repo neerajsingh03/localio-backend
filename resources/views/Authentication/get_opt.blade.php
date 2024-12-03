@@ -11,7 +11,7 @@
    <div class="container">
       <div class="contact_content" data-aos="fade-up" data-aos-duration="1000">
          <div class="hd_text">
-            <h2 class="text-center">Recover your passwordt</h2>
+            <h2 class="text-center">Recover your password</h2>
          </div>
          <!-- Your existing form -->
 
