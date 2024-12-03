@@ -180,13 +180,13 @@
                      <h2 class="accordion-header" id="heading{{ $faq->id }}">
                         <button class="accordion-button" type="button" data-bs-toggle="collapse"
                            data-bs-target="#collapse{{ $faq->id }}" aria-expanded="false" aria-controls="collapse{{ $faq->id }}">
-                        <span>{{ $faq->question ?? '' }}</span>
+                        <span>{{ $faq->translations->isNotEmpty() ? $faq->translations->first()->question : ($faq->question) ?? '' }}</span>
                         </button>
                      </h2>
                      <div id="collapse{{ $faq->id }}" class="accordion-collapse collapse" aria-labelledby="heading{{ $faq->id }}"
                         data-bs-parent="#accordionExample"> 
                         <div class="accordion-body">
-                           {{ strip_tags($faq->answer ?? '') }}
+                           {{ strip_tags( $faq->translations->isNotEmpty() ? $faq->translations->first()->answer :   ($faq->answer) ?? ''  ) }}
                         </div>
                      </div>
                   </div>

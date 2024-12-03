@@ -5,6 +5,7 @@ namespace App\Http\Controllers\User\MetaPages;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Faq;
+use App\Models\SiteLanguages;
 class MetaPagesController extends Controller
 {
     public function expertGuide()
@@ -13,7 +14,15 @@ class MetaPagesController extends Controller
     }
     public function helpCenter()
     {
-        $faqs = Faq::all();
+        $locale = getCurrentLocale();
+
+        $siteLanguage = SiteLanguages::where('handle',$locale)->first();
+
+        $faqs  = Faq::with(['translations' => function($query) use ($siteLanguage){
+            
+                        $query->where('language_id',$siteLanguage->id);
+                        
+                        }])->get();
 
         return view('User.meta-pages.support.help',compact('faqs'));
     }
