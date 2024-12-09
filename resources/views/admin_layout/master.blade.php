@@ -145,48 +145,35 @@
                                                         class="nk-menu-link"><span class="nk-menu-text">Rules</span></a>
                                                 </li>
                                             </ul>
-                                        <li class="nk-menu-item has-sub">
-                                            <a href="#" class="nk-menu-link nk-menu-toggle">
-                                                <span class="nk-menu-icon"><em class="icon ni ni-article"></em></span>
-                                                <span class="nk-menu-text">FAQ's Section</span>
-                                            </a>
-                                            <ul class="nk-menu-sub">
-                                                <li class="nk-menu-item">
-                                                    <a href="{{url('/admin-dashboard/faqs')}}"
-                                                        class="nk-menu-link"><span class="nk-menu-text">Faq's</span></a>
-                                                </li>
-
-                                            </ul>
+                                            <li class="nk-menu-item has-sub">
+                                                <a href="#" class="nk-menu-link nk-menu-toggle">
+                                                    <span class="nk-menu-icon"><em class="icon ni ni-article"></em></span>
+                                                    <span class="nk-menu-text">FAQ's Section</span>
+                                                </a>
+                                                <ul class="nk-menu-sub">
+                                                    <li class="nk-menu-item">
+                                                        <a href="{{url('/admin-dashboard/faqs')}}"
+                                                            class="nk-menu-link"><span class="nk-menu-text">Faq's</span>
+                                                        </a>
+                                                    </li>
+                                                </ul>
+                                            </li>
+                                            <li class="nk-menu-item has-sub">
+                                                <a href="#" class="nk-menu-link nk-menu-toggle">
+                                                    <span class="nk-menu-icon"><em class="icon ni ni-article"></em></span>
+                                                    <span class="nk-menu-text">Products Section</span>
+                                                </a>
+                                                <ul class="nk-menu-sub">
+                                                    <li class="nk-menu-item">
+                                                        <a href="{{url('/admin-dashboard/products')}}"
+                                                            class="nk-menu-link"><span class="nk-menu-text">Product</span>
+                                                        </a>
+                                                    </li>
+                                                </ul>
+                                            </li>
                                         </li>
+                                    </ul>
                                 </li>
-                            </ul>
-                            </li>
-                            <!-- <li class="nk-menu-item has-sub">
-                                    <a href="#" class="nk-menu-link nk-menu-toggle">
-                                        <span class="nk-menu-icon"><em class="icon ni ni-users"></em></span>
-                                        <span class="nk-menu-text">User Manage</span>
-                                    </a>
-                                    <ul class="nk-menu-sub">
-                                        <li class="nk-menu-item">
-                                            <a href="{{url('/admin-dashboard/users-list')}}" class="nk-menu-link"><span class="nk-menu-text">User List - Designer</span></a>
-                                        </li>
-
-                                    </ul>
-                                </li> -->
-                            <!-- <li class="nk-menu-item has-sub">
-                                    <a href="#" class="nk-menu-link nk-menu-toggle">
-                                        <span class="nk-menu-icon"><i class="fas fa-network-wired"></i></span>
-                                        <span class="nk-menu-text">Genre</span>
-                                    </a>
-                                    <ul class="nk-menu-sub">
-                                        <li class="nk-menu-item">
-                                            <a href="{{url('/admin-dashboard/genre')}}" class="nk-menu-link"><span class="nk-menu-text">Genre List</span></a>
-                                        </li>
-
-                                    </ul>
-                                </li> -->
-
-
                             </ul>
                         </div>
                     </div>
@@ -429,21 +416,24 @@
         // console.log(url);
     });
     </script>
-    <script>
-        @if (Session::has('error'))
-        toastr.clear();
-        NioApp.Toast('{{ Session::get('error') }}', 'error', {
-            position: 'top-right'
-        });
-        @endif
+    @if (Session::get('error'))
+        <script>
+            toastr.clear();
+            NioApp.Toast('{{ Session::get('error') }}', 'error', {
+                position: 'top-right'
+            });
+        </script>
+    @endif
+    @if (Session::get('success'))
+        <script>
+            toastr.clear();
+            NioApp.Toast('{{ Session::get('success') }}', 'info', {
+                position: 'top-right'
+            });
+        </script>
+    @endif
 
-        @if (Session::has('success'))
-        toastr.clear();
-        NioApp.Toast('{{ Session::get('success') }}', 'info', {
-            position: 'top-right'
-        });
-        @endif
-    </script>
+
 
     <!-- script make theme dark mode dinamic: -->
     <script>

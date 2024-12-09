@@ -298,7 +298,7 @@ function fillColor() {
 //     }
 // };
 
-window.addEventListener("scroll", myScrollFunc);
+// window.addEventListener("scroll", myScrollFunc);
 
 
 // search bar

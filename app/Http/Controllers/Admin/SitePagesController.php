@@ -19,8 +19,6 @@ class SitePagesController extends Controller
     public function policies()
     {   
         $locale = getCurrentLocale();
-  
-    
         $siteLanguage = SiteLanguages::where('handle', $locale)->first();
 
         $policies = Policy::with(['translations' => function ($query) use ($siteLanguage) {

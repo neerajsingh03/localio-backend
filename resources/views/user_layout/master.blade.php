@@ -253,7 +253,7 @@
                         @endif
                      @endforeach
                      <div class="select-btn">
-                        <span class="sBtn-text">{{ $curent_selected_lang }}</span>
+                        <span class="sBtn-text">{{ $curent_selected_lang ?? 'English' }}</span>
                         <i class="fa-solid fa-chevron-down" style="color: #ffffff;"></i>
                      </div>
 
@@ -264,9 +264,6 @@
                                     <a href="{{ route('change-lang',['langCode'=>$language->handle]) }}">
                                        {{ $language->name }}
                                     </a>
-                                    <!-- <a href="{{url('/')}}/{{$language->handle}}">
-                                       {{ $language->name }}
-                                    </a> -->
                                  </span>
                            </li>
                         @endforeach
@@ -304,7 +301,6 @@
       $(document).ready(function () {
          function checkScroll() {
             const $myElement = $('#myID');
-            console.log($myElement);
             if ($(window).scrollTop() > 460) {
                $myElement.show();
             } else {

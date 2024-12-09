@@ -174,10 +174,10 @@
                 </p>
             </div>
             @if(isset($faqs) && $faqs->isNotEmpty())
-               <div class="accordion" id="accordionExample">
+                <div class="accordion" id="accordionExample">
                   @foreach($faqs as $faq)
-                  <div class="faq-accor">
-                     <div class="accordion-item" data-aos="fade-up" data-aos-duration="1000">
+                    <div class="faq-accor">
+                        <div class="accordion-item" data-aos="fade-up" data-aos-duration="1000">
                            <h2 class="accordion-header" id="heading{{ $faq->id }}">
                               <button class="accordion-button {{ $loop->first ? 'collapsed' : '' }}" type="button"
                                  data-bs-toggle="collapse" data-bs-target="#collapse{{ $faq->id }}" aria-expanded="false"
@@ -185,17 +185,17 @@
                                  <span>{{ $faq->translations->isNotEmpty() ? $faq->translations->first()->question : ($faq->question) ?? '' }}</span>
                               </button>
                            </h2>
-                           <div id="collapse{{ $faq->id }}"
+                            <div id="collapse{{ $faq->id }}"
                               class="accordion-collapse collapse {{ $loop->first ? 'show' : '' }}"
                               aria-labelledby="heading{{ $faq->id }}" data-bs-parent="#accordionExample">
-                              <div class="accordion-body">
-                                 {{ strip_tags($faq->translations->isNotEmpty() ? $faq->translations->first()->answer : ($faq->answer) ?? '') }}
-                              </div>
-                           </div>
-                     </div>
-                  </div>
+                                <div class="accordion-body">
+                                    {{ strip_tags($faq->translations->isNotEmpty() ? $faq->translations->first()->answer : ($faq->answer) ?? '') }}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                   @endforeach
-               </div>
+                </div>
             @endif
          </div>
     </div>
