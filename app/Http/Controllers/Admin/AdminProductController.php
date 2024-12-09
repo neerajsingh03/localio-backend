@@ -36,8 +36,8 @@ class AdminProductController extends Controller
             'description' => 'required|string',
             'product_category' => 'required',  // Ensures category is selected and exists in categories table
             'product_price' => 'required|numeric',
-            'product_icon' => 'required|file|mimes:jpeg,png,jpg,svg,webp|max:2048',
-            'product_image' => 'required|file|image|mimes:jpeg,png,jpg,svg,webp|max:2048',
+            'product_icon' => 'nullable|file|mimes:jpeg,png,jpg,svg,webp|max:2048',
+            'product_image' => 'nullable|file|image|mimes:jpeg,png,jpg,svg,webp|max:2048',
             'product_link' => 'required|url',
             'key_features' => 'required|array|min:1',
         ]);
@@ -68,13 +68,18 @@ class AdminProductController extends Controller
         $product->product_link = $request->product_link;
         $product->save();
 
-        $productCategory = $request->product_category;
+        $productCategorys = $request->product_category;
 
-        if (is_array($productCategory) && count($productCategory) > 1) {
-            $product->categories()->sync($request->productCategory);
+        if (!empty($productCategorys) && is_array($productCategorys)) {
+            // If there are categories, sync them with the product
+            $product->categories()->sync($productCategorys);
+        } elseif (!empty($request->selected_categories)) {
+            // If selected_categories is passed, sync with those categories
+            $product->categories()->sync($request->selected_categories);
+        } else {
+            // If no categories are provided, you may want to remove all categories
+            $product->categories()->sync([]);
         }
-
-        $product->categories()->sync($request->selected_categories);
 
         $product->keyFeatures()->delete(); // Delete existing key features to avoid duplicates
         foreach ($keyFeatures as $feature) {

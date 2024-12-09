@@ -83,7 +83,7 @@
                                 </td>
                                 <td class="nk-tb-col tb-col-mb">
                                     <span class="tb-lead">
-                                        {{ ( $product->product_price  ?? '' ) }}                                    
+                                        {{ formatInr($product->product_price ?? 0) }}
                                     </span> 
                                 </td>
                                 <td class="nk-tb-col tb-col-mb">
