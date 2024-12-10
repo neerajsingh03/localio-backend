@@ -3,7 +3,7 @@
 <div class="nk-block nk-block-lg">
     <div class="nk-block-head d-flex justify-content-between">
         <div class="nk-block-head-content">
-            <h4 class="title nk-block-title">Add Product</h4>
+            <h4 class="title nk-block-title">{{isset($product) ?'Update Product' : 'Add Product' }}</h4>
         </div>
     </div>
     <?php $lang = getCurrentLocale();?>
@@ -21,7 +21,7 @@
                                 <label class="form-label" for="name">Product Name</label>
                                 <div class="d-flex">
                                     <div class="flex-grow-1">
-                                        <input type="text" class="form-control" name="name" id="name" value="{{isset($product) ? $product->name  : '' }}">
+                                        <input type="text" class="form-control" name="name" id="name" value="{{ old('name', isset($productTranslation) ? $productTranslation->name : ($product->name ?? '')) }}" >
                                     </div>
                                 </div>
                                 @error('name')
@@ -36,15 +36,22 @@
                                 <label class="form-label" for="description">Product Description</label>
                                 <div class="form-control-wrap">
                                     <textarea class="description" name="description" id="description" rows="4"
-                                        cols="50">{{isset($product) ? $product->description  : '' }}</textarea>
+                                        cols="50">{{old('description', isset($productTranslation) ? $productTranslation->description : ($product->description ?? ''))}}</textarea>
                                     @error('description')
                                         <div class="error text-danger">{{ $message }}</div>
                                     @enderror
                                 </div>
-                               
                             </div>
                         </div>
                     </div>
+
+                    @if($productTranslation->language ?? '')
+                        <input type="hidden" name="handle" value="{{ $productTranslation->language->handle ?? '' }}">
+                    @else
+                        <input type="hidden" class="form-control" id="language_id" name="handle" value="{{ Cookie::get('language_code', config('app.locale')) }}" />
+                    @endif
+                    <input type="hidden" name="product_tr_id" value="{{ $productTranslation->id ?? '' }}">
+
                     <!-- New Input Fields -->
                     <div class="row g-3 mt-2">
                         @if(!isset($product))
@@ -150,35 +157,58 @@
                         <div class="error text-danger">{{ $message }}</div>
                         @enderror
                     </div>
-                    <div class="col-md-12 feature-group">
+                    <div class="col-md-12">
                         <div class="form-group">
                             <label class="form-label" for="name">Key Features</label>
-                            <div class="d-flex flex-column">
+                            <div class="features-container">
                                 @if(!isset($product))
-                                <input type="text" class="form-control" name="key_features[]" id="keyFeatures">
+                                    
+                                <div class="feature-group d-flex align-items-center">
+                                    <input type="text" class="form-control" name="key_features[]" id="keyFeatures">
+                                    <button class="remove-feature btn btn-icon ml-2" type="button" style="display:none;">
+                                        <i class="fa fa-minus-circle text-danger" style="font-size: 1.5rem; cursor: pointer;"></i>
+                                    </button>
+                                </div>
+                             
                                 @elseif(isset($product))
                                     @foreach($product->keyFeatures as $feature)
-                                        <input type="text" class="form-control" name="key_features[]" id="keyFeatures" value="{{$feature->feature}}">
+                                        <div class="feature-group d-flex align-items-center">
+                                            @php
+                                                $translation = $feature->translations->firstWhere('language_id', $siteLanguage->id);
+                                            @endphp
+
+                                            <input type="text" class="form-control" 
+                                                name="key_features[{{$feature->id}}]" 
+                                                id="keyFeatures" 
+                                                value="{{ $translation ? $translation->feature : $feature->feature }}">
+
+                                            <button class="remove-feature btn btn-icon ml-2" type="button">
+                                                <i class="fa fa-minus-circle text-danger" style="font-size: 1.5rem; cursor: pointer;"></i>
+                                            </button>
+                                        </div>
                                     @endforeach
 
                                 @endif
-                                @if ($errors->has('key_features'))
-                                    <div class="error text-danger">{{ $errors->first('key_features') }}</div>
-                                @endif
-                                <div class="mt-1 text-center original-feature-controls"> <!-- Add Feature Icon -->
+                            </div>
+                            @if ($errors->has('key_features'))
+                            <div class="error text-danger">{{ $errors->first('key_features') }}</div>
+                            @endif
+                            @if($lang == 'en')
+                                <div class="mt-1 text-center"> <!-- Add Feature Icon -->
                                     <button class="add-more-features btn btn-icon" type="button">
                                         <i class="fa fa-plus-circle text-success" style="font-size: 1.5rem; cursor: pointer;"></i>
                                     </button>
                                 </div>
-                            </div>
+                            @endif
                         </div>
                     </div>
+
 
                     <!-- Submit Button -->
                     <div class="col-md-12 mt-4">
                         <div class="form-group">
                             <button class="addCategory btn btn-primary text-center"><em
-                                    class="icon ni ni-plus"></em><span>Add Product</span></button>
+                                    class="icon ni ni-plus"></em><span>{{isset($product) ? 'Update Product' : 'Add Product'}}</span></button>
                         </div>
                     </div>
                 </form>
@@ -192,7 +222,7 @@ $(document).ready(function() {
         let selectedCategories = $(this).val(); 
 
         selectedCategories.forEach(function(categoryId) {
-
+ 
             if ($('#selected-category-ids-container input[value="' + categoryId + '"]').length === 0) {
                 
                 let hiddenInput = $('<input>', {
@@ -242,67 +272,27 @@ $(document).ready(function() {
     });
 });
 
+
 $(document).ready(function () {
     // Add more input fields
     $(document).on('click', '.add-more-features', function () {
-        let originalDiv = $(this).closest('.feature-group'); // Original input group
-        let clonedDiv = originalDiv.clone(); // Clone the entire input group
-
-        // Clear values in the cloned input and remove error messages
-        clonedDiv.find('input').val('');
-        clonedDiv.find('.error').remove();
-
-        // Remove the add feature button in the cloned input
-        clonedDiv.find('.original-feature-controls').remove();
-
-        // Add a remove button to the cloned input
-        clonedDiv.append(`
-            <div class="mt-1 text-center cloned-feature-controls">
-                <button class="remove-feature btn btn-icon" type="button">
+        const newFeature = `
+            <div class="feature-group d-flex align-items-center">
+                <input type="text" class="form-control" name="key_features[]" id="keyFeatures">
+                <button class="remove-feature btn btn-icon ml-2" type="button">
                     <i class="fa fa-minus-circle text-danger" style="font-size: 1.5rem; cursor: pointer;"></i>
                 </button>
             </div>
-        `);
-
-        // Insert the cloned input after the original
-        originalDiv.after(clonedDiv);
+        `;
+        $('.features-container').append(newFeature);
     });
 
-    // Remove cloned input field
+    // Remove a single input field
     $(document).on('click', '.remove-feature', function () {
         $(this).closest('.feature-group').remove();
     });
 });
 
-
-
-// $(document).ready(function () {
-//     $('.addCategory').click(function (e) {
-//         e.preventDefault(); // Prevent form submission
-
-//         let valid = true;
-//         let errorMessages = [];
-
-//         // Validate Key Features
-//         $('input[name="key_features[]"]').each(function () {
-//             let value = $(this).val().trim();
-//             if (value === '') {
-//                 valid = false;
-//                 errorMessages.push('Key Features cannot be empty.');
-//                 $(this).next('.error').remove(); // Remove existing error message
-//                 $(this).after('<div class="error text-danger">This field is required.</div>');
-//             } else {
-//                 $(this).next('.error').remove(); // Clear error if valid
-//             }
-//         });
-
-//         if (valid) {
-//             $('#registerForm').submit(); // Submit the form if valid
-//         } else {
-//             console.log(errorMessages); // Debug or display messages as needed
-//         }
-//     });
-// });
 
 </script>
 

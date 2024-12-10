@@ -24,5 +24,17 @@ class SiteLanguages extends Model
     {
         return $this->hasMany(FaqTranslation::class, 'language_id');
     }
+    public function productTranslations()
+    {
+        return $this->hasMany(ProductTranslation::class, 'language_id');
+    }
+
+    /**
+     * Relationship with ProductKeyFeatureTranslation
+     */
+    public function productKeyFeatureTranslations()
+    {
+        return $this->hasMany(ProductKeyFeatureTranslation::class, 'language_id');
+    }
         
 }

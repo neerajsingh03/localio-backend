@@ -14,4 +14,8 @@ class ProductKeyFeature extends Model
     {
         return $this->belongsTo(Product::class);
     }
+    public function translations()
+    {
+        return $this->hasMany(ProductKeyFeatureTranslation::class, 'product_key_id');
+    }
 }

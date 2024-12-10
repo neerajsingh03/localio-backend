@@ -60,7 +60,7 @@
                                     <div class="user-card">
                                         <div class="user-info">
                                             <span class="tb-lead">
-                                                {{ $product->name  ?? '' }}
+                                            {{ $product->translations->isNotEmpty() ? $product->translations->first()->name : ($product->name ?? 'not name found') }}
                                             </span>
                                         </div>
                                     </div>
@@ -112,7 +112,9 @@
                                     @if($product->keyFeatures->isNotEmpty())
                                         @foreach($product->keyFeatures as $feature)
                                             {{$count++}}
-                                            {{ $feature->feature }}{{ !$loop->last ? ', ' : '' }}
+                                         
+                                            {{ $feature->translations->isNotEmpty() ? $feature->translations->first()->feature : ($feature->feature ?? 'not feature found') }}
+                                     
                                         @endforeach
                                     @else
                                         not data found
