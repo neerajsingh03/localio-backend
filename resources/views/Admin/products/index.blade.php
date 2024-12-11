@@ -67,14 +67,14 @@
                                 </td>
                                 <td class="nk-tb-col tb-col-mb">
                                     <span class="tb-lead">
-                                        {{ strip_tags( $product->description  ?? '' ) }}                                    
+                                        {{ strip_tags($product->translations->isNotEmpty() ? $product->translations->first()->description : ($product->description ?? '' ) )  }}
                                     </span> 
                                 </td>
                                 <td class="nk-tb-col tb-col-mb">
                                     <span class="tb-lead">
                                     @if($product->categories->isNotEmpty())
                                         @foreach($product->categories as $category)
-                                            {{ $category->name }}{{ !$loop->last ? ', ' : '' }}
+                                            {{ $category->translations->isNotEmpty()  ? $category->translations->first()->name : ($category->name ?? '')}}{{ !$loop->last ? ', ' : '' }}
                                         @endforeach
                                     @else
                                         not data found

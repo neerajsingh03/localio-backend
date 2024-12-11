@@ -30,4 +30,5 @@ class ProductTranslation extends Model
         return $this->hasMany(ProductTranslation::class, 'product_id', 'product_id')
                     ->where('id', '!=', $this->id);
     }
+
 }

@@ -62,7 +62,7 @@
                                     <option value="" disabled>Select Categories</option>
                                     @if($categories->isNotEmpty())
                                         @foreach($categories as $category)
-                                            <option value="{{ $category->id }}">{{ $category->name }}</option>
+                                            <option value="{{ $category->id }}">{{ $category->name  ?? '' }}</option>
                                         @endforeach
                                     @endif
                                 </select>
@@ -83,7 +83,7 @@
                                             @foreach($categories as $category)
                                                 <option value="{{ $category->id }}" 
                                                     @if($product->categories->contains($category->id)) selected @endif>
-                                                    {{ $category->name }}
+                                                    {{ $category->name ?? '' }}
                                                 </option>
                                             @endforeach
                                         @endif
@@ -92,8 +92,16 @@
                                 @elseif($lang !== 'en')
                                     <div class="form-group">
                                         <label class="form-label" for="product-category">Product Category</label>
-                                        <input type="text" class="form-control" name="product_category_display" id="product-category-display" 
-                                            value="{{ $product->categories->pluck('name')->join(', ') }}" readonly>
+                                        <!-- <input type="text" class="form-control" name="product_category_display" id="product-category-display" 
+                                            value="{{ $product->categories->pluck('name')->join(', ') }}" readonly> -->
+                                            <input type="text" class="form-control" name="product_category_display" id="product-category-display" 
+                                            value="{{ $product->categories->isNotEmpty() 
+                                                    ? $product->categories->map(function($category) use($siteLanguage) {
+                                                        $translation = $category->translations->firstWhere('language_id', $siteLanguage->id);
+                                                        return $translation ? $translation->name : $category->name;
+                                                    })->join(', ') 
+                                                    : $product->categories->pluck('name')->join(', ') }}" readonly>
+
                                         <input type="hidden" name="product_category[]" id="product-category" value="{{ implode(',', $product->categories->pluck('id')->toArray()) }}">
                                     </div>
                                 @endif    
@@ -115,13 +123,11 @@
                     <div class="col-md-12 mt-3">
                         <div class="form-group">
                             <label class="form-label" for="product-icon">Product Icon</label>
-                            @if($lang == 'en')
+                            @if(!isset($product) || $lang == 'en')
                                 <input type="file" class="form-control" name="product_icon" id="product-icon">
                             @endif
                             @if(isset($product))
                                 <img src="{{ asset('ProductIcon/' . $product->product_icon) }}" alt="{{ $product->name }}" style="width: 50px; height: auto;">
-                            @else
-                                <span>No Image</span>
                             @endif
                         </div>
                         @error('product_icon')
@@ -133,13 +139,11 @@
                     <div class="col-md-12 mt-3">
                         <div class="form-group">
                             <label class="form-label" for="product-image">Product Image</label>
-                            @if($lang == 'en')
+                            @if(!isset($product) || $lang == 'en')
                                 <input type="file" class="form-control" name="product_image" id="product-image">
                             @endif
                             @if(isset($product))
                                 <img src="{{ asset('ProductImage/' . $product->product_image) }}" alt="{{ $product->name }}" style="width: 50px; height: auto;">
-                            @else
-                                <span>No Image</span>
                             @endif
                         </div>
                         @error('product_image')
@@ -169,7 +173,6 @@
                                         <i class="fa fa-minus-circle text-danger" style="font-size: 1.5rem; cursor: pointer;"></i>
                                     </button>
                                 </div>
-                             
                                 @elseif(isset($product))
                                     @foreach($product->keyFeatures as $feature)
                                         <div class="feature-group d-flex align-items-center">
@@ -193,7 +196,7 @@
                             @if ($errors->has('key_features'))
                             <div class="error text-danger">{{ $errors->first('key_features') }}</div>
                             @endif
-                            @if($lang == 'en')
+                            @if(!isset($product) || $lang == 'en')
                                 <div class="mt-1 text-center"> <!-- Add Feature Icon -->
                                     <button class="add-more-features btn btn-icon" type="button">
                                         <i class="fa fa-plus-circle text-success" style="font-size: 1.5rem; cursor: pointer;"></i>
@@ -202,8 +205,6 @@
                             @endif
                         </div>
                     </div>
-
-
                     <!-- Submit Button -->
                     <div class="col-md-12 mt-4">
                         <div class="form-group">
@@ -292,9 +293,5 @@ $(document).ready(function () {
         $(this).closest('.feature-group').remove();
     });
 });
-
-
 </script>
-
-
 @endsection
