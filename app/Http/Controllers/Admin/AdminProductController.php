@@ -186,5 +186,4 @@ class AdminProductController extends Controller
     }
 }
 
-
-// this is neeraj01 branch code
+// neeraj01 branch
