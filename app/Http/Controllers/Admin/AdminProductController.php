@@ -185,3 +185,6 @@ class AdminProductController extends Controller
         return redirect()->back()->with('success','product remove successfully');
     }
 }
+
+
+// this is neeraj01 branch code
