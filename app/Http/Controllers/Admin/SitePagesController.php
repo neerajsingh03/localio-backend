@@ -361,4 +361,9 @@ class SitePagesController extends Controller
         $faq->delete();
         return redirect()->back()->with('success','faq remove successfully');
     }
+
+    public function knowledgeBase()
+    {
+        return view('Admin.knowledge-base.index');
+    }
 }

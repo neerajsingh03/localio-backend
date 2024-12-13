@@ -211,6 +211,10 @@ Route::group(['middleware' =>['admin']],function(){
     Route::get('/admin-dashboard/product-edit/{id}',[AdminProductController::class,'productEdit'])->name('product-edit');
     Route::get('/admin-dashboard/remove-product/{id}',[AdminProductController::class,'removeProduct'])->name('product-remove');
 
+    // Knowledge Base Route
+
+    Route::get('/admin-dashboard/knowledge-base',[SitePagesController::class,'knowledgeBase'])->name('knowledge-base');
+
 });
 
 Route::group(['middleware' =>['vendor']],function(){
